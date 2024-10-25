@@ -1,3 +1,4 @@
+Info
 ```shell
 git clone https://github.com/erwindobp98/hn.git
 ```
@@ -5,12 +6,10 @@ git clone https://github.com/erwindobp98/hn.git
 cd hn
 ```
 Edit Private Key dan Address di File hana.py
-```
 ```shell
 nano hana.py
 ```
-install
-```
+Install
 ```shell
 pip install web3
 ```
