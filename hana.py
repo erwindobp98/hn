@@ -100,7 +100,7 @@ def deposit_to_contract(network, private_key, from_address, amount_in_eth):
         return None
 
 def main():
-    amount_in_eth = 0.000001  # Masukan eth base yang ingin dimasukan
+    amount_in_eth = 0.00000000001  # Masukan eth base yang ingin dimasukan
 
     while True:
         # Start timer
