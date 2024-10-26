@@ -20,7 +20,6 @@ Edit private_key,address,amount_in_eth,transaction_count di File bot.py or multi
 ```shell
 nano bot.py
 ```
-Or
 ```shell
 nano multi.py
 ```
@@ -32,6 +31,5 @@ Run
 ```shell
 python bot.py
 ```
-Or
 ```shell
 python multi.py
