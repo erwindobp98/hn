@@ -1,3 +1,4 @@
+import random
 from web3 import Web3
 import time
 import os
@@ -133,8 +134,10 @@ def main():
 
         print(f"Transaction execution time: {duration:.2f} seconds")
         
-        # Delay for the next transaction
-        time.sleep(10)  # 10 seconds
+        # Random delay for the next transaction
+        sleep_time = random.uniform(5, 15)  # Random sleep between 5 and 15 seconds
+        print(f"Sleeping for {sleep_time:.2f} seconds before next transaction.")
+        time.sleep(sleep_time)
 
     # Print total executed transactions
     print(f"\nTotal executed transactions: {executed_transactions}/{transaction_count}")
