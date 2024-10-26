@@ -16,9 +16,13 @@ Before you run this bot, ensure you have the following:
 git clone https://github.com/erwindobp98/hn.git
 cd hn
 ```
-Edit private_key,address,amount_in_eth,transaction_count di File bot.py
+Edit private_key,address,amount_in_eth,transaction_count di File bot.py or multi.py
 ```shell
 nano bot.py
+```
+Or
+```shell
+nano multi.py
 ```
 Install
 ```shell
@@ -28,3 +32,6 @@ Run
 ```shell
 python bot.py
 ```
+Or
+```shell
+python multi.py
