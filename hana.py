@@ -101,8 +101,10 @@ def deposit_to_contract(network, private_key, from_address, amount_in_eth):
 
 def main():
     amount_in_eth = 0.00000000001  # Masukan eth base yang ingin dimasukan
+    transaction_count = 1000  # Set jumlah transaksi yang ingin dilakukan
+    executed_transactions = 0  # Counter untuk transaksi yang berhasil
 
-    while True:
+    for i in range(transaction_count):
         # Start timer
         start_time = time.time()
 
@@ -114,14 +116,18 @@ def main():
         duration = end_time - start_time
 
         if tx_hash:
-            print(f"Network: {network['name']} | Tx Hash: {tx_hash}")
+            executed_transactions += 1  # Increment counter if transaction is successful
+            print(f"Transaction #{i + 1}: Network: {network['name']} | Tx Hash: {tx_hash}")
         else:
-            print("Transaction failed")
+            print(f"Transaction #{i + 1}: Failed")
 
         print(f"Transaction execution time: {duration:.2f} seconds")
         
         # jeda untuk transaksi
-        time.sleep(15)  # 10 menit
+        time.sleep(10)  # 10 detik 
+
+    # Print total executed transactions
+    print(f"\nTotal executed transactions: {executed_transactions}/{transaction_count}")
 
 if __name__ == "__main__":
     main()
