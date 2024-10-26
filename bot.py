@@ -2,14 +2,14 @@ from web3 import Web3
 import time
 import os
 
-# Fungsi untuk menampilkan teks di tengah layar
+# Function to display text centered on the screen
 def center_text(text):
     terminal_width = os.get_terminal_size().columns
     lines = text.splitlines()
     centered_lines = [line.center(terminal_width) for line in lines]
     return "\n".join(centered_lines)
 
-# Deskripsi teks
+# Description text
 description = """
 HANA NETWORK
 BY : PUCUK KANGKUNG KONTOL BABI
@@ -30,8 +30,8 @@ network = {
 
 # Wallet details
 wallet = {
-    'private_key': '',  # Tambahkan private key
-    'address': ''       # Tambahkan alamat wallet
+    'private_key': 'here',  # Replace with actual private key
+    'address': 'here'       # Replace with actual wallet address
 }
 
 # ABI for the contract
@@ -46,6 +46,12 @@ contract_abi = [
         "type": "function"
     }
 ]
+
+# Function to print the wallet balance
+def print_wallet_balance(web3, address):
+    balance = web3.eth.get_balance(address)
+    balance_in_eth = web3.from_wei(balance, 'ether')
+    print(f"Wallet Balance: {balance_in_eth:.5f} ETH")
 
 # Function to deposit ETH using the depositETH function in the contract
 def deposit_to_contract(network, private_key, from_address, amount_in_eth):
@@ -63,7 +69,7 @@ def deposit_to_contract(network, private_key, from_address, amount_in_eth):
     # Estimate gas
     try:
         gas_estimate = contract.functions.depositETH().estimate_gas({'from': from_address, 'value': transaction_value})
-        gas_limit = gas_estimate + 10000  # Tambahkan buffer gas
+        gas_limit = gas_estimate + 10000  # Add buffer gas
     except Exception as e:
         print(f"Error estimating gas: {e}")
         return None
@@ -100,11 +106,15 @@ def deposit_to_contract(network, private_key, from_address, amount_in_eth):
         return None
 
 def main():
-    amount_in_eth = 0.00000000001  # Masukan eth base yang ingin dimasukan
-    transaction_count = 1000  # Set jumlah transaksi yang ingin dilakukan
-    executed_transactions = 0  # Counter untuk transaksi yang berhasil
+    web3 = Web3(Web3.HTTPProvider(network['rpc_url']))
+    amount_in_eth = 0.00000000001  # Set the amount of ETH to deposit
+    transaction_count = 1000  # Set the number of transactions to perform
+    executed_transactions = 0  # Counter for successful transactions
 
     for i in range(transaction_count):
+        # Print wallet balance before each transaction
+        print_wallet_balance(web3, wallet['address'])
+
         # Start timer
         start_time = time.time()
 
@@ -123,8 +133,8 @@ def main():
 
         print(f"Transaction execution time: {duration:.2f} seconds")
         
-        # jeda untuk transaksi
-        time.sleep(10)  # 10 detik 
+        # Delay for the next transaction
+        time.sleep(10)  # 10 seconds
 
     # Print total executed transactions
     print(f"\nTotal executed transactions: {executed_transactions}/{transaction_count}")
