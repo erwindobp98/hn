@@ -24,7 +24,13 @@ Install
 ```shell
 pip install web3
 ```
+Install
+```shell
+pip install colorama
+```
 Run
 ```shell
-python bot.py
-
+python dp.py
+```
+```shell
+python gr.py
