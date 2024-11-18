@@ -44,7 +44,6 @@ async def refresh_access_token(session, refresh_token):
         data = await response.json()
         return data.get('access_token')
 
-# Function to handle grow and garden actions
 async def handle_grow_and_garden(session, refresh_token, api_url):
     """Handles the grow and garden actions."""
     new_access_token = await refresh_access_token(session, refresh_token)
@@ -67,35 +66,24 @@ async def handle_grow_and_garden(session, refresh_token, api_url):
 
     animated_print(f"POINTS: {balance} | Grow left: {grow} | Garden left: {garden}", color=Fore.GREEN, delay=0.05)
 
-    # Manually input the number of grow actions to execute
-    grow_actions_to_execute = int(input(f"Enter the number of grow actions you want to perform (max {grow}): "))
-    grow_actions_to_execute = min(grow_actions_to_execute, grow)  # Ensure not to exceed available actions
+    # Automatically perform grow actions
+    for i in range(grow):
+        animated_print(f"Performing grow action {i + 1}/{grow}...", color=Fore.CYAN, delay=0.05)
+        reward = await execute_grow_action(session, api_url)
+        if reward:
+            balance += reward
+            animated_print(f"Rewards from grow: {reward} | New Balance: {balance} | Grow left: {grow - (i + 1)}", color=Fore.GREEN, delay=0.05)
+        else:
+            animated_print(f"No reward from grow action {i + 1}.", color=Fore.YELLOW, delay=0.05)
+        await asyncio.sleep(1)
 
-    # Perform the specified number of grow actions
-    if grow_actions_to_execute > 0:
-        for i in range(grow_actions_to_execute):
-            animated_print(f"Performing grow action {i + 1}/{grow_actions_to_execute}...", color=Fore.CYAN, delay=0.05)
-            reward = await execute_grow_action(session, api_url)
-            if reward:
-                balance += reward
-                animated_print(f"Rewards from grow: {reward} | New Balance: {balance} | Grow left: {grow - (i + 1)}", color=Fore.GREEN, delay=0.05)
-                await asyncio.sleep(1)  # Sleep for 5 seconds after each grow action
-            else:
-                animated_print(f"No reward from grow action {i + 1}.", color=Fore.YELLOW, delay=0.05)
-    else:
-        animated_print(f"No Grow actions left for this account.", color=Fore.YELLOW, delay=0.05)
+    # Automatically perform garden actions if available
+    while garden >= 10:
+        animated_print(f"Performing garden reward actions...", color=Fore.CYAN, delay=0.05)
+        await execute_garden_action(session, api_url, 10)
+        garden -= 10
+        await asyncio.sleep(1)
 
-    # Check if garden actions are available
-    if garden >= 10:
-        animated_print(f"Performing garden actions...", color=Fore.CYAN, delay=0.05)  # Print before performing garden actions
-        while garden >= 10:
-            await execute_garden_action(session, api_url, 10)
-            garden -= 10
-            await asyncio.sleep(1)  # Sleep for 5 seconds after each garden action
-    else:
-        animated_print(f"Not enough Garden actions left for this account.", color=Fore.YELLOW, delay=0.05)
-
-# Function to execute grow action
 async def execute_grow_action(session, api_url):
     """Executes the grow action and returns the reward."""
     grow_action_query = {
@@ -107,16 +95,13 @@ async def execute_grow_action(session, api_url):
     }
 
     try:
-        animated_print(f"Executing grow action...", color=Fore.CYAN, delay=0.05)  # Print when grow action is being executed
         response = await colay(session, api_url, 'POST', grow_action_query)
         reward = response['data']['executeGrowAction']['totalValue']
-        animated_print(f"Grow action completed. Reward: {reward}", color=Fore.GREEN, delay=0.05)
         return reward
     except Exception as e:
         animated_print(f"Error during grow action: {str(e)}", color=Fore.RED, delay=0.05)
         return 0
 
-# Function to execute garden reward action
 async def execute_garden_action(session, api_url, limit):
     """Executes the garden reward action for a given limit."""
     garden_action_query = {
@@ -129,19 +114,17 @@ async def execute_garden_action(session, api_url, limit):
     }
 
     try:
-        animated_print(f"Executing garden reward action with limit {limit}...", color=Fore.CYAN, delay=0.05)  # Print before garden action
         response = await colay(session, api_url, 'POST', garden_action_query)
-        card_ids = [item['cardId'] for item in response['data']['executeGardenRewardAction']]
-        animated_print(f"Opened Garden: {card_ids}", color=Fore.GREEN, delay=0.05)  # Print the result of garden action
+        card_ids = [item['cardId'] for item in response['data']['executeGardenRewardAction']['data']]
+        animated_print(f"Opened Garden: {card_ids}", color=Fore.GREEN, delay=0.05)
     except Exception as e:
         animated_print(f"Error during garden action: {str(e)}", color=Fore.RED, delay=0.05)
 
-# Main function to manage the execution
 async def main():
     """Main loop for processing accounts."""
     api_url = "https://hanafuda-backend-app-520478841386.us-central1.run.app/graphql"
 
-    # Manually input multiple refresh tokens
+    # Input multiple refresh tokens
     refresh_tokens = []
     while True:
         refresh_token = input("Enter a refresh token (or type 'done' to finish): ")
@@ -153,14 +136,14 @@ async def main():
         while True:
             for refresh_token in refresh_tokens:
                 await handle_grow_and_garden(session, refresh_token, api_url)
-            animated_print(f"All accounts processed. Cooling down for 2 Menit...", color=Fore.MAGENTA, delay=0.05)
-            await asyncio.sleep(120)  # Cooldown for 10 minutes
+            animated_print(f"All accounts processed. Cooling down for 2 minutes...", color=Fore.MAGENTA, delay=0.05)
+            await asyncio.sleep(120)
 
-# Start the main execution loop
 if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        animated_print("\nDihentikan oleh pengguna.", color=Fore.RED, delay=0.05)
+        animated_print("\nStopped by user.", color=Fore.RED, delay=0.05)
     finally:
-        animated_print("Terima kasih telah menggunakan layanan ini TOL! 🥳", color=Fore.YELLOW, delay=0.05)
+        animated_print("Thank you for using this service! 🥳", color=Fore.YELLOW, delay=0.05)
+
