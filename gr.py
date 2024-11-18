@@ -79,7 +79,7 @@ async def handle_grow_and_garden(session, refresh_token, api_url):
             if reward:
                 balance += reward
                 animated_print(f"Rewards from grow: {reward} | New Balance: {balance} | Grow left: {grow - (i + 1)}", color=Fore.GREEN, delay=0.05)
-                await asyncio.sleep(5)  # Sleep for 5 seconds after each grow action
+                await asyncio.sleep(3)  # Sleep for 5 seconds after each grow action
             else:
                 animated_print(f"No reward from grow action {i + 1}.", color=Fore.YELLOW, delay=0.05)
     else:
@@ -91,7 +91,7 @@ async def handle_grow_and_garden(session, refresh_token, api_url):
         while garden >= 10:
             await execute_garden_action(session, api_url, 10)
             garden -= 10
-            await asyncio.sleep(5)  # Sleep for 5 seconds after each garden action
+            await asyncio.sleep(3)  # Sleep for 5 seconds after each garden action
     else:
         animated_print(f"Not enough Garden actions left for this account.", color=Fore.YELLOW, delay=0.05)
 
@@ -107,7 +107,7 @@ async def execute_grow_action(session, api_url):
     }
 
     try:
-        animated_print(f"Executing grow action...", color=Fore.CYAN, delay=0.1)  # Print when grow action is being executed
+        animated_print(f"Executing grow action...", color=Fore.CYAN, delay=0.05)  # Print when grow action is being executed
         response = await colay(session, api_url, 'POST', grow_action_query)
         reward = response['data']['executeGrowAction']['totalValue']
         animated_print(f"Grow action completed. Reward: {reward}", color=Fore.GREEN, delay=0.05)
@@ -132,7 +132,7 @@ async def execute_garden_action(session, api_url, limit):
         animated_print(f"Executing garden reward action with limit {limit}...", color=Fore.CYAN, delay=0.05)  # Print before garden action
         response = await colay(session, api_url, 'POST', garden_action_query)
         card_ids = [item['cardId'] for item in response['data']['executeGardenRewardAction']]
-        animated_print(f"Opened Garden: {card_ids}", color=Fore.GREEN, delay=0.1)  # Print the result of garden action
+        animated_print(f"Opened Garden: {card_ids}", color=Fore.GREEN, delay=0.05)  # Print the result of garden action
     except Exception as e:
         animated_print(f"Error during garden action: {str(e)}", color=Fore.RED, delay=0.05)
 
