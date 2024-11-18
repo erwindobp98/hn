@@ -153,8 +153,8 @@ async def main():
         while True:
             for refresh_token in refresh_tokens:
                 await handle_grow_and_garden(session, refresh_token, api_url)
-            animated_print(f"All accounts processed. Cooling down for 7 Menit...", color=Fore.MAGENTA, delay=0.05)
-            await asyncio.sleep(420)  # Cooldown for 10 minutes
+            animated_print(f"All accounts processed. Cooling down for 2 Menit...", color=Fore.MAGENTA, delay=0.05)
+            await asyncio.sleep(120)  # Cooldown for 10 minutes
 
 # Start the main execution loop
 if __name__ == "__main__":
