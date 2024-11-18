@@ -67,17 +67,21 @@ async def handle_grow_and_garden(session, refresh_token, api_url):
 
     animated_print(f"POINTS: {balance} | Grow left: {grow} | Garden left: {garden}", color=Fore.GREEN, delay=0.05)
 
-    # Check if grow actions are available
-    if grow > 0:
-        animated_print(f"Performing grow action...", color=Fore.CYAN, delay=0.05)  # Print before performing grow action
-        reward = await execute_grow_action(session, api_url)
-        if reward:
-            balance += reward
-            grow = 0
-            animated_print(f"Rewards from grow: {reward} | New Balance: {balance} | Grow left: {grow}", color=Fore.GREEN, delay=0.05)
-            await asyncio.sleep(10)  # Sleep for 10 seconds after each grow action
-        else:
-            animated_print(f"No reward from grow action.", color=Fore.YELLOW, delay=0.05)
+    # Manually input the number of grow actions to execute
+    grow_actions_to_execute = int(input(f"Enter the number of grow actions you want to perform (max {grow}): "))
+    grow_actions_to_execute = min(grow_actions_to_execute, grow)  # Ensure not to exceed available actions
+
+    # Perform the specified number of grow actions
+    if grow_actions_to_execute > 0:
+        for i in range(grow_actions_to_execute):
+            animated_print(f"Performing grow action {i + 1}/{grow_actions_to_execute}...", color=Fore.CYAN, delay=0.05)
+            reward = await execute_grow_action(session, api_url)
+            if reward:
+                balance += reward
+                animated_print(f"Rewards from grow: {reward} | New Balance: {balance} | Grow left: {grow - (i + 1)}", color=Fore.GREEN, delay=0.05)
+                await asyncio.sleep(5)  # Sleep for 5 seconds after each grow action
+            else:
+                animated_print(f"No reward from grow action {i + 1}.", color=Fore.YELLOW, delay=0.05)
     else:
         animated_print(f"No Grow actions left for this account.", color=Fore.YELLOW, delay=0.05)
 
@@ -87,7 +91,7 @@ async def handle_grow_and_garden(session, refresh_token, api_url):
         while garden >= 10:
             await execute_garden_action(session, api_url, 10)
             garden -= 10
-            await asyncio.sleep(10)  # Sleep for 10 seconds after each garden action
+            await asyncio.sleep(5)  # Sleep for 5 seconds after each garden action
     else:
         animated_print(f"Not enough Garden actions left for this account.", color=Fore.YELLOW, delay=0.05)
 
@@ -97,7 +101,7 @@ async def execute_grow_action(session, api_url):
     grow_action_query = {
         "query": """
         mutation executeGrowAction {
-            executeGrowAction(withAll: False) { totalValue }
+            executeGrowAction(withAll: false) { totalValue }
         }""",
         "operationName": "executeGrowAction"
     }
