@@ -79,7 +79,7 @@ async def handle_grow_and_garden(session, refresh_token, api_url):
             if reward:
                 balance += reward
                 animated_print(f"Rewards from grow: {reward} | New Balance: {balance} | Grow left: {grow - (i + 1)}", color=Fore.GREEN, delay=0.05)
-                await asyncio.sleep(2)  # Sleep for 5 seconds after each grow action
+                await asyncio.sleep(1)  # Sleep for 5 seconds after each grow action
             else:
                 animated_print(f"No reward from grow action {i + 1}.", color=Fore.YELLOW, delay=0.05)
     else:
@@ -91,7 +91,7 @@ async def handle_grow_and_garden(session, refresh_token, api_url):
         while garden >= 10:
             await execute_garden_action(session, api_url, 10)
             garden -= 10
-            await asyncio.sleep(2)  # Sleep for 5 seconds after each garden action
+            await asyncio.sleep(1)  # Sleep for 5 seconds after each garden action
     else:
         animated_print(f"Not enough Garden actions left for this account.", color=Fore.YELLOW, delay=0.05)
 
