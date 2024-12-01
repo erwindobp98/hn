@@ -23,9 +23,9 @@ print("\n\n")
 
 # Network information (Base)
 network = {
-    'name': 'Base',
-    'rpc_url': 'https://base.llamarpc.com',
-    'chain_id': 8453,
+    'name': 'Optimism',
+    'rpc_url': 'https://optimism.llamarpc.com',
+    'chain_id': 10,
     'contract_address': '0xC5bf05cD32a14BFfb705Fb37a9d218895187376c'
 }
 
@@ -108,8 +108,8 @@ def deposit_to_contract(network, private_key, from_address, amount_in_eth):
 
 def main():
     web3 = Web3(Web3.HTTPProvider(network['rpc_url']))
-    amount_in_eth = 0.00000000001  # Set the amount of ETH to deposit
-    transaction_count = 1000  # Set the number of transactions to perform
+    amount_in_eth = 0.000000001  # Set the amount of ETH to deposit
+    transaction_count = 10000  # Set the number of transactions to perform
     executed_transactions = 0  # Counter for successful transactions
 
     for i in range(transaction_count):
