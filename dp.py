@@ -31,8 +31,8 @@ network = {
 
 # Wallet details
 wallet = {
-    'private_key': 'here',  # Replace with actual private key
-    'address': 'here'       # Replace with actual wallet address
+    'private_key': 'isi private key',  # Replace with actual private key
+    'address': 'isi adrres wallet'       # Replace with actual wallet address
 }
 
 # ABI for the contract
@@ -109,7 +109,7 @@ def deposit_to_contract(network, private_key, from_address, amount_in_eth):
 def main():
     web3 = Web3(Web3.HTTPProvider(network['rpc_url']))
     amount_in_eth = 0.000000001  # Set the amount of ETH to deposit
-    transaction_count = 10000  # Set the number of transactions to perform
+    transaction_count = 500  # Set the number of transactions to perform
     executed_transactions = 0  # Counter for successful transactions
 
     for i in range(transaction_count):
@@ -135,7 +135,7 @@ def main():
         print(f"Transaction execution time: {duration:.2f} seconds")
         
         # Random delay for the next transaction
-        sleep_time = random.uniform(5, 15)  # Random sleep between 5 and 15 seconds
+        sleep_time = random.uniform(12, 15)  # Random sleep between 5 and 15 seconds
         print(f"Sleeping for {sleep_time:.2f} seconds before next transaction.")
         time.sleep(sleep_time)
 
