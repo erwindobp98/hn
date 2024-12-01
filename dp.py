@@ -5,10 +5,14 @@ import os
 
 # Function to display text centered on the screen
 def center_text(text):
-    terminal_width = os.get_terminal_size().columns
+    if sys.stdout.isatty():
+        terminal_width = os.get_terminal_size().columns
+    else:
+        terminal_width = 80  # Gunakan lebar default jika tidak berjalan di terminal
     lines = text.splitlines()
     centered_lines = [line.center(terminal_width) for line in lines]
     return "\n".join(centered_lines)
+
 
 # Description text
 description = """
