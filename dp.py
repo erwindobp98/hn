@@ -5,14 +5,10 @@ import os
 
 # Function to display text centered on the screen
 def center_text(text):
-    if sys.stdout.isatty():
-        terminal_width = os.get_terminal_size().columns
-    else:
-        terminal_width = 80  # Gunakan lebar default jika tidak berjalan di terminal
+    terminal_width = os.get_terminal_size().columns
     lines = text.splitlines()
     centered_lines = [line.center(terminal_width) for line in lines]
     return "\n".join(centered_lines)
-
 
 # Description text
 description = """
@@ -27,16 +23,16 @@ print("\n\n")
 
 # Network information (Base)
 network = {
-    'name': 'Optimism',
-    'rpc_url': 'https://optimism.llamarpc.com',
-    'chain_id': 10,
+    'name': 'Base',
+    'rpc_url': 'https://base.llamarpc.com',
+    'chain_id': 8453,
     'contract_address': '0xC5bf05cD32a14BFfb705Fb37a9d218895187376c'
 }
 
 # Wallet details
 wallet = {
-    'private_key': 'isi private key',  # Replace with actual private key
-    'address': 'isi adrres wallet'       # Replace with actual wallet address
+    'private_key': 'isi pk',  # Replace with actual private key
+    'address': 'isi adres wallet'       # Replace with actual wallet address
 }
 
 # ABI for the contract
